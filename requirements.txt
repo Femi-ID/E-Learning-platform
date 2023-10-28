@@ -1,0 +1,2 @@
+Django
+Pillow # To upload images in the project
