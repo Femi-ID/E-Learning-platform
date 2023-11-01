@@ -9,8 +9,6 @@ Mixins are a special kind of multiple inheritance for a class. You can use them
 to provide common discrete functionality that, when added to other mixins, allows
 you to define the behavior of a class.
 """
-
-
 # class ManageCourseListView(ListView):
 #     model = Course
 #     template_name = 'courses/manage/course/list.html'
