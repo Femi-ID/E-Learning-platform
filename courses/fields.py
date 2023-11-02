@@ -32,4 +32,4 @@ class OrderField(models.PositiveIntegerField):
 
 
 # More info about writing custom model fields at
-# https://docs.djangoproject.com/en/3.0/howto/custom-model-fields/
+# https://docs.djangoproject.com/en/4.2/howto/custom-model-fields/

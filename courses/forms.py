@@ -10,6 +10,6 @@ ModuleFormset = inlineformset_factory(Course,
                                       can_delete=True)
 
 # This function allows you to build a model formset dynamically for the Module objects related to a Course object.
-# You can learn more about formsets at: https://docs.djangoproject.com/en/3.0/topics/forms/formsets/
-# and about model formsets at: https://docs.djangoproject.com/en/3.0/topics/forms/modelforms/#model-formsets.
+# You can learn more about formsets at: https://docs.djangoproject.com/en/4.2/topics/forms/formsets/
+# and about model formsets at: https://docs.djangoproject.com/en/4.2/topics/forms/modelforms/#model-formsets.
 
