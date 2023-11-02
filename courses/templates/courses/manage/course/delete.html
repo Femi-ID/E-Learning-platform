@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %} Delete Course {% endblock %}
+
+
+<!--<p>This is the template for the CourseDeleteView view. This view inherits from DeleteView,-->
+<!-- provided by Django</p>-->
+{% block content %}
+  <h1>Delete course "{{ object.title }}"</h1>
+
+  <div class="module">
+    <form action="" method="post">
+      {% csrf_token %}
+      <p>Are you sure you want to delete {{ object }}</p>
+      <input type="submit" value="Confirm">
+    </form>
+  </div>
+{% endblock %}

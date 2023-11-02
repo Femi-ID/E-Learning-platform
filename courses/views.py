@@ -4,6 +4,10 @@ from django.urls import reverse_lazy
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.shortcuts import redirect, get_object_or_404
+from django.views.generic.base import TemplateResponseMixin, View
+from .forms import ModuleFormset
+
 """
 Mixins are a special kind of multiple inheritance for a class. You can use them
 to provide common discrete functionality that, when added to other mixins, allows
@@ -64,3 +68,32 @@ class CourseUpdateView(OwnerCourseEditMixin, UpdateView):
 class CourseDeleteView(OwnerCourseMixin, DeleteView):
     template_name = 'courses/manage/course/delete.html'
     permission_required = 'courses.delete_course'
+
+
+class CourseModuleUpdateView(TemplateResponseMixin, View):
+    """This view handles the formset to add, update and delete modules for a specific course."""
+    template_name = 'courses/manage/module/formset.html'
+    course = None
+
+    def get_formset(self, data=None):
+        return ModuleFormset(instance=self.course, data=data)
+
+    def dispatch(self, request, pk):
+        # It's provided by the View class. It takes an HTTP request and its parameters
+        # and attempts to delegate to a lowercase method that matches the HTTP method used.
+        self.course = get_object_or_404(Course, id=pk, owner=request.user)
+        return super().dispatch(request, pk)
+
+    def get(self, request, *args, **kwargs):
+        formset = self.get_formset()
+        return self.render_to_response({'course': self.course,
+                                        'formset': formset})
+
+    def post(self, request, *args, **kwargs):
+        formset = self.get_formset(data=request.POST)
+        if formset.is_valid():
+            formset.save()
+            return redirect('manage_course_list')
+        return self.render_to_response({'course': self.course,
+                                        'formset': formset})
+

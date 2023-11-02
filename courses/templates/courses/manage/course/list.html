@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title%} My courses {% endblock %}
+{% block title %} My courses {% endblock %}
 
 {% block content %}
 <!--    <p>Template for the ManageCourseListView view</p>-->
@@ -11,8 +11,8 @@
             <div class="course-info">
                 <h3>{{ course.title }}</h3>
                 <p>
-                    <a href="{% url 'course_edit' %}">Edit</a>
-                    <a href="{% url 'course_delete' %}">Delete</a>
+                    <a href="{% url 'course_edit' course.id %}">Edit</a>
+                    <a href="{% url 'course_delete' course.id %}">Delete</a>
                 </p>
             </div>
         {%empty %}
