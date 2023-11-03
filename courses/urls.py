@@ -7,5 +7,11 @@ urlpatterns = [
     path('<pk>/edit/', views.CourseUpdateView.as_view(), name='course_edit'),
     path('<pk>/delete/', views.CourseDeleteView.as_view(), name='course_delete'),
     path('<pk>/module/', views.CourseModuleUpdateView.as_view(), name='course_module_update'),
+
+    # To create new text, video, image, or file objects and add them to a module.
+    path('module/<int:module_id>/content/<model_name>/create/', views.ContentCreateUpdateView.as_view(),
+         name='module_content_create'),
+    path('module/<int:module_id>/content/<model_name>/<id>/', views.ContentCreateUpdateView.as_view(),
+         name='module_content_update'),
 ]
 
