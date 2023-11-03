@@ -100,8 +100,7 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
 
 
 class ContentCreateUpdateView(TemplateResponseMixin, View):
-    """This is the first part of ContentCreateUpdateView. It will allow you to create
-        and update different models' contents."""
+    """To create and update different models' contents."""
     module = None
     model = None
     obj = None
@@ -149,10 +148,29 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
             return self.render_to_response({'form': form, 'object': self.obj})
 
 
-class ContentDeleteView(View):
+class ContentDeleteView(View, TemplateResponseMixin):
+    """views to delete course modules' contents"""
     def post(self, request, id):
-        content = get_object_or_404(Content, id=id, module__course__owner=request.user)
-        module = content.module
-        content.item.delete()
-        content.delete()
+        try:
+            content = get_object_or_404(Content, id=id, module__course__owner=request.user)
+            module = content.module
+            # To delete the related Text, Video, Image, or File object and then delete the Content object
+            content.item.delete()
+            content.delete()
+        except Content.DoesNotExist:
+            return self.render_to_response({'error': "Content not found, doesn't exist",
+                                            'success': True,
+                                            'status_code': 404
+                                            })
         return redirect('module_content_list', module.id)
+
+
+class ModuleContentListView(TemplateResponseMixin, View):
+    """List the contents of a specific module"""
+    template_name = 'courses/manage/module/content_list.html'
+
+    def get(self, request, module_id):
+        # gets the Module object with the given ID that belongs to the current user
+        module = get_object_or_404(Module, id=module_id, course__owner=request.user)
+        return self.render_to_response({'module': module})
+
