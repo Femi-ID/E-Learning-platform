@@ -3,7 +3,7 @@
 {% block title %} My courses {% endblock %}
 
 {% block content %}
-<!--    <p>Template for the ManageCourseListView view</p>-->
+<!--Template for the ManageCourseListView view-->
     <h1>My courses</h1>
 
     <div class="module">
@@ -14,6 +14,12 @@
                     <a href="{% url 'course_edit' course.id %}">Edit</a>
                     <a href="{% url 'course_delete' course.id %}">Delete</a>
                     <a href="{% url 'course_module_update' course.id %}">Edit modules</a>
+                <!--to access the contents of the first module of the course, if there are any-->
+                    {% if course.modules.count > 0 %}
+                        <a href="{% url 'module_content_list' course.modules.first.id %}">
+                            Manage contents
+                        </a>
+                    {% endif %}
                 </p>
             </div>
         {%empty %}
