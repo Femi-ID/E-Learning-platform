@@ -45,7 +45,7 @@
                             <a href="{% url 'module_content_update' module.id item|model_name item.id %}">
                                 Edit
                             </a>
-<!--You need the model name to build the URL to edit the object.Django doesn't allow accessing variables or attributes
+<!--You need the model name to build the URL to edit the object. Django doesn't allow accessing variables or attributes
 starting with an underscore in templates to prevent retrieving private attributes or calling private methods-->
                             <form action="{% url 'module_content_delete' content.id %}" method="post">
                                 <input type="submit" value="Delete">
@@ -64,13 +64,13 @@ starting with an underscore in templates to prevent retrieving private attribute
                     <a href="{% url 'module_content_create' module.id 'text' %}">Text</a>
                 </li>
                 <li>
-                    <a href="{% url 'module_content_create' module_id 'image' %}">Image</a>
+                    <a href="{% url 'module_content_create' module.id 'image' %}">Image</a>
                 </li>
                 <li>
-                    <a href="{% url 'module_content_create' module_id 'video' %}">Video</a>
+                    <a href="{% url 'module_content_create' module.id 'video' %}">Video</a>
                 </li>
                 <li>
-                    <a href="{% url 'module_content_create' module_id 'file' %}">File</a>
+                    <a href="{% url 'module_content_create' module.id 'file' %}">File</a>
                 </li>
             </ul>
         </div>

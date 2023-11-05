@@ -9,6 +9,7 @@ from .forms import ModuleFormset
 from django.forms.models import modelform_factory
 from django.apps import apps
 from .models import Content, Module
+from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 """
 Mixins are a special kind of multiple inheritance for a class. You can use them
 to provide common discrete functionality that, when added to other mixins, allows
@@ -143,7 +144,7 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
             obj.save()
             if not id:
                 # id(for video, text...) doesn't exist, then create a new content
-                Content.objects.create(module=self.module.id, item=obj)
+                Content.objects.create(module=self.module, item=obj)
                 return redirect('module_content_list', self.module.id)
             return self.render_to_response({'form': form, 'object': self.obj})
 
@@ -173,4 +174,24 @@ class ModuleContentListView(TemplateResponseMixin, View):
         # gets the Module object with the given ID that belongs to the current user
         module = get_object_or_404(Module, id=module_id, course__owner=request.user)
         return self.render_to_response({'module': module})
+
+
+class ModuleOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+    """To provide a simple way to reorder course's modules"""
+    def post(self, request):
+        # To re-order every module for that particular course
+        for id, order in self.request_json.items():
+            Module.objects.filter(id=id, course__owner=request.user).update(order=order)
+        return self.render_json_response({'saved': 'OK'})
+
+
+class ContentOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+    """To provide a simple way to reorder modules' contents."""
+    def post(self, request):
+        # To re-order every content for that particular content
+        for id, order in self.request_json.items():
+            Content.objects.filter(id=id, module__course__owner=request.user).update(order=order)
+        return self.render_json_response({'saved': 'OK'})
+
+
 
