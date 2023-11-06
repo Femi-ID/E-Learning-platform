@@ -1,6 +1,7 @@
 *.sqlite3
-*/__pycache__/
+*__pycache__/
 educa/__pycache__/
 notes.txt
 __pycache__/
 images/
+**.pyc

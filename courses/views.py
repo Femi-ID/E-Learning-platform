@@ -10,11 +10,16 @@ from django.forms.models import modelform_factory
 from django.apps import apps
 from .models import Content, Module
 from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
+from django.db.models import Count
+from .models import Subject
+from django.views.generic.detail import DetailView
 """
 Mixins are a special kind of multiple inheritance for a class. You can use them
 to provide common discrete functionality that, when added to other mixins, allows
 you to define the behavior of a class.
 """
+
+
 # class ManageCourseListView(ListView):
 #     model = Course
 #     template_name = 'courses/manage/course/list.html'
@@ -27,6 +32,7 @@ you to define the behavior of a class.
 class OwnerMixin(object):
     """Returns a queryset of objects belonging to the current user.
     Can be used for any views that interact with any model that containing owner attribute"""
+
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.filter(owner=self.request.user)
@@ -34,6 +40,7 @@ class OwnerMixin(object):
 
 class OwnerEditMixin(object):
     """To assign the form to the current logged-in user."""
+
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super().form_valid(form)
@@ -151,6 +158,7 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
 
 class ContentDeleteView(View, TemplateResponseMixin):
     """views to delete course modules' contents"""
+
     def post(self, request, id):
         try:
             content = get_object_or_404(Content, id=id, module__course__owner=request.user)
@@ -178,6 +186,7 @@ class ModuleContentListView(TemplateResponseMixin, View):
 
 class ModuleOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
     """To provide a simple way to reorder course's modules"""
+
     def post(self, request):
         # To re-order every module for that particular course
         for id, order in self.request_json.items():
@@ -187,11 +196,38 @@ class ModuleOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
 
 class ContentOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
     """To provide a simple way to reorder modules' contents."""
+
     def post(self, request):
         # To re-order every content for that particular content
         for id, order in self.request_json.items():
             Content.objects.filter(id=id, module__course__owner=request.user).update(order=order)
         return self.render_json_response({'saved': 'OK'})
 
+
+class CourseListView(TemplateResponseMixin, View):
+    """Display all available courses for students to browse and enroll on them."""
+    model = Course
+    template_name = 'courses/course/list.html'
+
+    def get(self, request, subject=None):
+        # You retrieve all subjects, using the ORM's annotate() method with the Count() aggregation function
+        # to include the total number of courses for each subject. Same with modules for courses.
+        subjects = Subject.objects.annotate(total_courses=Count('courses'))
+        courses = Course.objects.annotate(total_modules=Count('modules'))
+
+        if subject:
+            # If given, retrieve the corresponding subject object and limit the query to the courses that
+            # belong to the given subject
+            subject = get_object_or_404(Subject, slug=subject)
+            courses = courses.filter(subject=subject)  # filter the courses by its subject
+        return self.render_to_response({'subjects': subjects,
+                                        'subject': subject,
+                                        'courses': courses})
+
+
+class CourseDetailView(DetailView):
+    """Display a single course overview"""
+    model = Course
+    template_name = 'courses/course/detail.html'
 
 
