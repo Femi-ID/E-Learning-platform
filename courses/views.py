@@ -216,10 +216,9 @@ class CourseListView(TemplateResponseMixin, View):
         courses = Course.objects.annotate(total_modules=Count('modules'))
 
         if subject:
-            # If given, retrieve the corresponding subject object and limit the query to the courses that
-            # belong to the given subject
+            # If given, retrieve the corresponding subject object
             subject = get_object_or_404(Subject, slug=subject)
-            courses = courses.filter(subject=subject)  # filter the courses by its subject
+            courses = courses.filter(subject=subject)  # limit the query by the courses belonging to the subject
         return self.render_to_response({'subjects': subjects,
                                         'subject': subject,
                                         'courses': courses})
@@ -229,5 +228,7 @@ class CourseDetailView(DetailView):
     """Display a single course overview"""
     model = Course
     template_name = 'courses/course/detail.html'
+    # Django's DetailView expects a primary key (pk) or slug URL parameter to retrieve
+    # a single object for the given model. To be sent in the view template.
 
 
