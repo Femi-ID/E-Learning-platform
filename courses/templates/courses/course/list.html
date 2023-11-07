@@ -24,8 +24,10 @@
             <li {% if not subject %} class="selected" {% endif %}>
                 <a href="{% url 'course_list' %}">All</a>
             </li>
+            <!--To display all subjects-->
             {% for s in subjects %}
                 <li {% if subject == s %} class="selected" {% endif %}>
+                    <!--The link below is to display all courses for a subject-->
                     <a href="{% url 'course_list_subject' s.slug %}">
                         {{ s.title }}
                         <br><span>{{ s.total_courses }} courses</span>
@@ -44,9 +46,9 @@
                     </a>
                 </h3>
                 <p>
-                    <a href="{% url 'course_list_subject' subject.slug %}">{{ subject }}</a>.
+                    <a href="{% url 'course_list_subject' subject.slug %}">{{ subject|upper }}</a>.
                     {{ course.total_modules }} modules.
-                    Instructor: {{ course.owner.get_full_name }}
+                    Instructor: {{ course.owner }} <!--.get_full_name isn't displaying fullname!!-->
                 </p>
             {% endwith %}
         {% endfor %}
