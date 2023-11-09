@@ -23,6 +23,8 @@ class Course(models.Model):
     slug = models.SlugField(max_length=200, unique=True)  # To be used in the URLs
     overview = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+    # To associate students with courses they've enrolled for
+    students = models.ManyToManyField(User, related_name='courses_joined', blank=True)
 
     class Meta:
         ordering = ['-created']
@@ -95,4 +97,5 @@ class Video(ItemBase):
 # OrderField field does not guarantee that all order values are consecutive.
 # However, it respects existing order values and always assigns the next order based on the highest existing order.
 # To calculate the new module's order, the field only considers existing modules that belong to the same course.
+
 

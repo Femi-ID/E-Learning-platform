@@ -13,6 +13,7 @@ from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.db.models import Count
 from .models import Subject
 from django.views.generic.detail import DetailView
+from students.forms import CourseEnrollForm
 """
 Mixins are a special kind of multiple inheritance for a class. You can use them
 to provide common discrete functionality that, when added to other mixins, allows
@@ -231,4 +232,11 @@ class CourseDetailView(DetailView):
     # Django's DetailView expects a primary key (pk) or slug URL parameter to retrieve
     # a single object for the given model. To be sent in the view template.
 
+    # To include the enrollment form in the context for rendering templates.
+    # You initialize the hidden course field of the form with the current Course object
+    # so that it can be submitted directly
+    def get_context_data(self, **kwargs):
+        context = super(CourseDetailView, self).get_context_data(**kwargs)
+        context['enroll_form'] = CourseEnrollForm(initial={'course': self.object})
+        return context
 
