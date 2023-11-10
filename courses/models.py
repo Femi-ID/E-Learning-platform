@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from .fields import OrderField
+from django.template.loader import render_to_string
 
 
 class Subject(models.Model):
@@ -76,6 +77,14 @@ class ItemBase(models.Model):
 
     def __str__(self):
         return self.title
+
+    def render(self):
+        """Uses render_to_string to return a template and return the rendered content as a string"""
+        return render_to_string(
+            # Each type of content is rendered using a template named after the content models
+            f'courses/content/{self._meta.model_name}.html',
+            {'item': self}
+        )
 
 
 class Text(ItemBase):

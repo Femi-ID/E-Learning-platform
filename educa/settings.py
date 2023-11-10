@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from django.conf.urls import static
@@ -136,4 +137,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 import mimetypes
 mimetypes.add_type("text/css", ".css", True)
+
+# To redirect the student after a successful login
+LOGIN_REDIRECT_URL = reverse_lazy('student_course_list')
+
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# Remember that MEDIA_URL is the base URL to serve uploaded media files and
+# MEDIA_ROOT is the local path where the files are located.
 

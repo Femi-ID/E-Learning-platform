@@ -236,7 +236,7 @@ class CourseDetailView(DetailView):
     # You initialize the hidden course field of the form with the current Course object
     # so that it can be submitted directly
     def get_context_data(self, **kwargs):
-        context = super(CourseDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['enroll_form'] = CourseEnrollForm(initial={'course': self.object})
         return context
 
