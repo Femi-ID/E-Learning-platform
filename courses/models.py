@@ -81,7 +81,7 @@ class ItemBase(models.Model):
     def render(self):
         """Uses render_to_string to return a template and return the rendered content as a string"""
         return render_to_string(
-            # Each type of content is rendered using a template named after the content models
+            # Each type of content is rendered using a template named after their content model
             f'courses/content/{self._meta.model_name}.html',
             {'item': self}
         )
