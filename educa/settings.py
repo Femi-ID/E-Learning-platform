@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'embed_video',
+    'memcache_status',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +149,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # Remember that MEDIA_URL is the base URL to serve uploaded media files and
 # MEDIA_ROOT is the local path where the files are located.
 
+CACHES = {
+'default': {
+'BACKEND': 'django.core.cache.backends.memcached.
+MemcachedCache',
+'LOCATION': '127.0.0.1:11211',
+}
+}
