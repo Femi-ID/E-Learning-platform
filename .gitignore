@@ -4,3 +4,5 @@ educa/__pycache__/
 notes.txt
 __pycache__/
 images/
+**/__pycache__/
+__pycache__

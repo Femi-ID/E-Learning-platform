@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'embed_video',
-    'memcache_status',
+    'memcache_status',  # displays statistics for your Memcached instances in the admin site
 ]
 
 MIDDLEWARE = [
@@ -150,9 +150,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # MEDIA_ROOT is the local path where the files are located.
 
 CACHES = {
-'default': {
-'BACKEND': 'django.core.cache.backends.memcached.
-MemcachedCache',
-'LOCATION': '127.0.0.1:11211',
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
 }
-}
+

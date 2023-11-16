@@ -1,2 +1,6 @@
 Django
 Pillow # To upload images in the project
+django-embed
+python-memcached
+django-memcache-status
+

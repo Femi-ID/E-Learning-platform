@@ -14,6 +14,7 @@ from django.db.models import Count
 from .models import Subject
 from django.views.generic.detail import DetailView
 from students.forms import CourseEnrollForm
+from django.core.cache import cache
 """
 Mixins are a special kind of multiple inheritance for a class. You can use them
 to provide common discrete functionality that, when added to other mixins, allows
@@ -213,7 +214,10 @@ class CourseListView(TemplateResponseMixin, View):
     def get(self, request, subject=None):
         # You retrieve all subjects, using the ORM's annotate() method with the Count() aggregation function
         # to include the total number of courses for each subject. Same with modules for courses.
-        subjects = Subject.objects.annotate(total_courses=Count('courses'))
+        subjects = cache.get('all_subjects')
+        if not subjects:  # if it hasn't been cached yet or timed out, you set it
+            subjects = Subject.objects.annotate(total_courses=Count('courses'))
+            cache.set('all_subjects', subjects)
         courses = Course.objects.annotate(total_modules=Count('modules'))
 
         if subject:
