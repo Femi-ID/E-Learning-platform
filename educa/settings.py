@@ -47,15 +47,28 @@ INSTALLED_APPS = [
     'memcache_status',  # displays statistics for your Memcached instances in the admin site
 ]
 
+# middleware are executed in the given order during the request phase,
+# and in reverse order during the response phase
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
+    # placed after CommonMiddleware intentionally because it needs to access request data set by it
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CACHE_MIDDLEWARE_ALIAS = 'default'
+CACHE_MIDDLEWARE_SECONDS = 60 * 15  # set timeout to 15 minutes
+CACHE_MIDDLEWARE_KEY_PREFIX = 'educa'
+
+# The site will now cache and return cached objects for
+# You specify a prefix for all cache keys to avoid collisions in case you use the same
+# Memcached backend for multiple projects.
 
 ROOT_URLCONF = 'educa.urls'
 

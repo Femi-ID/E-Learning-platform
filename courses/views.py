@@ -216,14 +216,27 @@ class CourseListView(TemplateResponseMixin, View):
         # to include the total number of courses for each subject. Same with modules for courses.
         subjects = cache.get('all_subjects')
         if not subjects:  # if it hasn't been cached yet or timed out, you set it
+            # cache.set(key, value, timeout)
             subjects = Subject.objects.annotate(total_courses=Count('courses'))
             cache.set('all_subjects', subjects)
-        courses = Course.objects.annotate(total_modules=Count('modules'))
+
+        all_courses = Course.objects.annotate(total_modules=Count('modules'))
 
         if subject:
             # If given, retrieve the corresponding subject object
             subject = get_object_or_404(Subject, slug=subject)
-            courses = courses.filter(subject=subject)  # limit the query by the courses belonging to the subject
+            # you'll want to cache something that is based on dynamic data. In these cases, you have to
+            # build dynamic keys that contain all the information required to uniquely identify the cached data.
+            key = f'subject_{subject.id}_courses'  # caching based on dynamic data
+            courses = cache.get(key)
+            if not courses:
+                courses = all_courses.filter(subject=subject)  # limit the query by the courses belonging to the subject
+                cache.set(key, courses)
+        else:
+            courses = cache.get('all_courses')
+            if not courses:
+                courses = all_courses
+                cache.set('all_courses', courses)  # to set an "all_courses" key to all_courses
         return self.render_to_response({'subjects': subjects,
                                         'subject': subject,
                                         'courses': courses})
