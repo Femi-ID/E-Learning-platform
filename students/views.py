@@ -75,3 +75,4 @@ class StudentCourseDetailView(DetailView):
             # context['module'] = course.modules.first()
         return context
 
+# Clear db, delete sqlite and migrate again
