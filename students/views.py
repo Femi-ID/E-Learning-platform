@@ -10,6 +10,7 @@ from django.views.generic.list import ListView
 from courses.models import Course
 from django.views.generic.detail import DetailView
 
+
 class StudentRegistrationView(CreateView):
     """View to allow students to register."""
     template_name = 'students/student/registration.html'
@@ -42,7 +43,7 @@ class StudentEnrollCourseView(LoginRequiredMixin, FormView):
         return reverse_lazy('student_course_detail', args=[self.course.id])
 
 
-class StudentCourseList(LoginRequiredMixin, ListView):
+class StudentCourseListView(LoginRequiredMixin, ListView):
     """View for the logged-in user(student) to see the courses they've enrolled for."""
     model = Course
     template_name = 'students/course/list.html'
@@ -76,3 +77,4 @@ class StudentCourseDetailView(DetailView):
         return context
 
 # Clear db, delete sqlite and migrate again
+
