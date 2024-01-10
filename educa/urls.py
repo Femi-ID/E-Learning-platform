@@ -30,6 +30,7 @@ urlpatterns = [
     path('course/', include('courses.urls')),
     path('', CourseListView.as_view(), name='course_list'),
     path('students/', include('students.urls')),
+    path('api/', include('courses.api.urls'), name='api')
 ]
 # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

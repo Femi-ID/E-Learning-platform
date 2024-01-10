@@ -31,12 +31,12 @@
 
     <div class="module">
         {% cache 600 module_contents module %}
-        {% for content in module.contents.all %}
-            {% with item=content.item %}
-                <h2>{{ item.title }}</h2>
-                {{ item.render }}  <!--To access each content item to be display-->
-            {% endwith %}
-        {% endfor %}
+            {% for content in module.contents.all %}
+                {% with item=content.item %}
+                    <h2>{{ item.title }}</h2>
+                    {{ item.render }}  <!--To access each content item to be displayed-->
+                {% endwith %}
+            {% endfor %}
         {% endcache %}
     </div>
 {% endblock %}
