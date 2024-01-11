@@ -21,3 +21,5 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = ['id', 'subject', 'title', 'slug',
                   'overview', 'created', 'owner', 'modules']
+
+
