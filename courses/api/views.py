@@ -40,7 +40,8 @@ class CourseViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
 
-    @action(detail=True, methods=['get', 'post'], serializer_class=CourseWithContentsSerializer,
+    @action(detail=True, methods=['get', 'post'],
+            serializer_class=CourseWithContentsSerializer,
             authentication_classes=[BasicAuthentication],
             permission_classes=[IsAuthenticated, IsEnrolled])
     def contents(self, request, *args, **kwargs):

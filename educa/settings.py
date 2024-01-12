@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'embed_video',
     'memcache_status',  # displays statistics for your Memcached instances in the admin site
     'rest_framework',
+    'chat',
 ]
 
 # middleware are executed in the given order during the request phase,
