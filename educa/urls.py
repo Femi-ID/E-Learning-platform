@@ -30,7 +30,9 @@ urlpatterns = [
     path('course/', include('courses.urls')),
     path('', CourseListView.as_view(), name='course_list'),
     path('students/', include('students.urls')),
-    path('api/', include('courses.api.urls'), name='api')
+    path('api/', include('courses.api.urls'), name='api'),
+    path('chat/', include('chat.urls', namespace='chat')),
+    # OR path('chat/', include('chat.urls'), name='chat'),
 ]
 # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
