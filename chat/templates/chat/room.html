@@ -13,4 +13,8 @@
 {% endblock %}
 
 {% block domready %}
+<!--use wss for secure websocket, like https://-->
+    var url = 'ws://' + window.location.host + '/ws/chat/room/' + '{{ course.id }}';
+    var chatSocket = new WebSocket(url);
 {% endblock %}
+<!--To open a websocket connection to the URL variable-->

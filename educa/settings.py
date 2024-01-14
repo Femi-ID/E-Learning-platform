@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'memcache_status',  # displays statistics for your Memcached instances in the admin site
     'rest_framework',
     'chat',
+    'channels',
 ]
 
 # middleware are executed in the given order during the request phase,
@@ -177,4 +178,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+ASGI_APPLICATION = 'educa.routing.application'
+
 
