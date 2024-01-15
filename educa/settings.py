@@ -179,6 +179,6 @@ REST_FRAMEWORK = {
     ]
 }
 
-ASGI_APPLICATION = 'educa.routing.application'
-
+# ASGI_APPLICATION = 'educa.routing.application'
+ASGI_APPLICATION = 'educa.asgi.application'
 
